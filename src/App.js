@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import images from './components/ImageData.js';
-import ImagesInfo from './components/ImagesInfo.js';
+import Imagesuser from './components/ImagesInfo.js';
 import Cart from './components/Cart.js';
 import UserInfo from './components/UserInfo.js';
 
@@ -11,24 +11,28 @@ const App = () => {
   const ordered = amounts.reduce((a,b) => a + b, 0);
   const [myImages,setMyImages] = useState(images);
   const [showCart,setShowCart] = useState(true);
-  const [newInfo, setNewInfo] = useState({name: "", address:""});
+  const [newUser, setNewUser] = useState({name: "", email:"", osoite:"",postiosoite:"",toimipaikka:""});
 
-  const infoChangeHandler = (event, field) => {
-    const tempInfo = {...newInfo};
-    tempInfo[field] = event.target.value;
-    setNewInfo(tempInfo);
+  const updateField = (event, fieldname) => {
+    const tempUser  = {...newUser};
+    tempUser[fieldname] = event.target.value;
+    setNewUser(tempUser);
+    console.log(newUser.name,newUser.email,newUser.osoite,newUser.postiosoite,newUser.toimipaikka);
   }
-  const infoSubmitHandler = event => {
+  const userSubmitHandler = event => {
     event.preventDefault();
+    console.log('SubmitHandler');
+    setShowCart(true)
     //tarkista että kaikki tiedot ok
-    console.log("nimi: ", newInfo.name, "address:", newInfo.address);
+   // console.log("nimi: ", newUser.name, "address:", newUser.address);
     // jos ok niin nollaa:
-    setNewInfo({name: "", address:""});
+    setNewUser({name: "", email:"", osoite:"",postiosoite:"",toimipaikka:""});
   }
+
   if (!showCart) {
   return  (
     <div className="Form">
-        <UserInfo newInfo={newInfo} ChangeHandler={infoChangeHandler} submitHandler={infoSubmitHandler}> </UserInfo>
+        <UserInfo newUser={newUser} updateField={updateField}setshowcart={setShowCart} submitHandler={userSubmitHandler}> </UserInfo>
       </div>
     )
   } else {
@@ -40,7 +44,7 @@ return(
   </header>
       
       <div className="container">
-		    <ImagesInfo images={myImages} updateImages={setMyImages} />
+		    <Imagesuser images={myImages} updateImages={setMyImages} />
       </div>
 
       <div className="Cart"> 
